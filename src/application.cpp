@@ -58,6 +58,10 @@ void Application::setup()
     button_blinn_phong.addListener(this, &Application::button_blinn_phong_pressed);
     group_shader_type.add(button_gouraud.setup("gouraud"));
     button_gouraud.addListener(this, &Application::button_gouraud_pressed);
+    group_shader_type.add(button_goosh.setup("goosh"));
+    button_goosh.addListener(this, &Application::button_goosh_pressed);
+    group_shader_type.add(button_cel.setup("cel"));
+    button_cel.addListener(this, &Application::button_cel_pressed);
     group_shader_type.add(button_pbr.setup("pbr"));
     button_pbr.addListener(this, &Application::button_pbr_pressed);
     group_shader_type.add(button_texture.setup("texture"));
@@ -294,6 +298,18 @@ void Application::button_gouraud_pressed()
     ofLog() << "<button gouraud pressed>";
 }
 
+void Application::button_goosh_pressed()
+{
+    renderer.shader_active = ShaderType::GOOSH;
+    ofLog() << "<button goosh pressed>";
+}
+
+void Application::button_cel_pressed()
+{
+    renderer.shader_active = ShaderType::CEL;
+    ofLog() << "<button cel pressed>";
+}
+
 void Application::button_pbr_pressed()
 {
     renderer.shader_active = ShaderType::PBR;
@@ -320,6 +336,8 @@ void Application::exit()
     button_phong.removeListener(this, &Application::button_phong_pressed);
     button_blinn_phong.removeListener(this, &Application::button_blinn_phong_pressed);
     button_gouraud.removeListener(this, &Application::button_gouraud_pressed);
+    button_goosh.removeListener(this, &Application::button_goosh_pressed);
+    button_cel.removeListener(this, &Application::button_cel_pressed);
     button_pbr.removeListener(this, &Application::button_pbr_pressed);
     button_texture.removeListener(this, &Application::button_texture_pressed);
     button_no_texture.removeListener(this, &Application::button_no_texture_pressed);

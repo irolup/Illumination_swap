@@ -14,6 +14,10 @@ enum ShaderType
   PHONG_NO_TEX,
   GOURAUD,
   GOURAUD_NO_TEX,
+  GOOSH,
+  GOOSH_NO_TEX,
+  CEL,
+  CEL_NO_TEX,
   BLINN_PHONG,
   BLINN_PHONG_NO_TEX,
   PBR,
@@ -41,6 +45,10 @@ public:
   ofShader shader_phong_no_tex;
   ofShader shader_gouraud;
   ofShader shader_gouraud_no_tex;
+  ofShader shader_goosh;
+  ofShader shader_goosh_no_tex;
+  ofShader shader_cel;
+  ofShader shader_cel_no_tex;
   ofShader shader_blinn_phong;
   ofShader shader_blinn_phong_no_tex;
   ofShader shader_pbr;

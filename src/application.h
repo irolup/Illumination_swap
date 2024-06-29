@@ -46,6 +46,8 @@ class Application : public ofBaseApp
   ofxButton button_phong;
   ofxButton button_blinn_phong;
   ofxButton button_gouraud;
+  ofxButton button_goosh;
+  ofxButton button_cel;
   ofxButton button_pbr;
   ofxButton button_texture;
   ofxButton button_no_texture;
@@ -54,6 +56,8 @@ class Application : public ofBaseApp
   void button_phong_pressed();
   void button_blinn_phong_pressed();
   void button_gouraud_pressed();
+  void button_goosh_pressed();
+  void button_cel_pressed();
   void button_pbr_pressed();
   void button_texture_pressed();
   void button_no_texture_pressed();

@@ -23,6 +23,10 @@ void Renderer::setup()
   shader_phong_no_tex.load("shaders_no_tex/phong_no_tex_330_vs.glsl", "shaders_no_tex/phong_no_tex_330_fs.glsl");
   shader_gouraud.load("shaders/gouraud_330_vs.glsl", "shaders/gouraud_330_fs.glsl");
   shader_gouraud_no_tex.load("shaders_no_tex/gouraud_no_tex_330_vs.glsl", "shaders_no_tex/gouraud_no_tex_330_fs.glsl");
+  shader_goosh.load("shaders/goosh_330_vs.glsl", "shaders/goosh_330_fs.glsl");
+  shader_goosh_no_tex.load("shaders_no_tex/goosh_no_tex_330_vs.glsl", "shaders_no_tex/goosh_no_tex_330_fs.glsl");
+  shader_cel.load("shaders/cel_330_vs.glsl", "shaders/cel_330_fs.glsl");
+  shader_cel_no_tex.load("shaders_no_tex/cel_no_tex_330_vs.glsl", "shaders_no_tex/cel_no_tex_330_fs.glsl");
   shader_blinn_phong.load("shaders/blinn_phong_330_vs.glsl", "shaders/blinn_phong_330_fs.glsl");
   shader_blinn_phong_no_tex.load("shaders_no_tex/blinn_phong_no_tex_330_vs.glsl", "shaders_no_tex/blinn_phong_no_tex_330_fs.glsl");
   shader_pbr.load("shaders/pbr_330_vs.glsl","shaders/pbr_330_fs.glsl");
@@ -295,6 +299,56 @@ void Renderer::update_shader_type()
       shader->end();
       break;
 
+    case ShaderType::GOOSH:
+      shader_name = "Goosh";
+      shader = &shader_goosh;
+      shader->begin();
+      shader->setUniform3f("color_ambient",  material_color_ambient.r / 255.0f, material_color_ambient.g / 255.0f, material_color_ambient.b / 255.0f);
+      shader->setUniform3f("color_diffuse",  material_color_diffuse.r / 255.0f, material_color_diffuse.g / 255.0f, material_color_diffuse.b / 255.0f);
+      shader->setUniform3f("color_specular", material_color_specular.r / 255.0f, material_color_specular.g / 255.0f, material_color_specular.b / 255.0f);
+      shader->setUniform1f("brightness", material_brightness);
+      shader->setUniform3f("light_position", light.getGlobalPosition());
+      shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
+      shader->end();
+      break;
+
+    case ShaderType::GOOSH_NO_TEX:
+      shader_name = "Goosh (No Texture)";
+      shader = &shader_goosh_no_tex;
+      shader->begin();
+      shader->setUniform3f("color_ambient",  material_color_ambient.r / 255.0f, material_color_ambient.g / 255.0f, material_color_ambient.b / 255.0f);
+      shader->setUniform3f("color_diffuse",  material_color_diffuse.r / 255.0f, material_color_diffuse.g / 255.0f, material_color_diffuse.b / 255.0f);
+      shader->setUniform3f("color_specular", material_color_specular.r / 255.0f, material_color_specular.g / 255.0f, material_color_specular.b / 255.0f);
+      shader->setUniform1f("brightness", material_brightness);
+      shader->setUniform3f("light_position", light.getGlobalPosition());
+      shader->end();
+      break;
+
+    case ShaderType::CEL:
+      shader_name = "Cel";
+      shader = &shader_cel;
+      shader->begin();
+      shader->setUniform3f("color_ambient",  material_color_ambient.r / 255.0f, material_color_ambient.g / 255.0f, material_color_ambient.b / 255.0f);
+      shader->setUniform3f("color_diffuse",  material_color_diffuse.r / 255.0f, material_color_diffuse.g / 255.0f, material_color_diffuse.b / 255.0f);
+      shader->setUniform3f("color_specular", material_color_specular.r / 255.0f, material_color_specular.g / 255.0f, material_color_specular.b / 255.0f);
+      shader->setUniform1f("brightness", material_brightness);
+      shader->setUniform3f("light_position", light.getGlobalPosition());
+      shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
+      shader->end();
+      break;
+
+    case ShaderType::CEL_NO_TEX:
+      shader_name = "Cel (No Texture)";
+      shader = &shader_cel_no_tex;
+      shader->begin();
+      shader->setUniform3f("color_ambient",  material_color_ambient.r / 255.0f, material_color_ambient.g / 255.0f, material_color_ambient.b / 255.0f);
+      shader->setUniform3f("color_diffuse",  material_color_diffuse.r / 255.0f, material_color_diffuse.g / 255.0f, material_color_diffuse.b / 255.0f);
+      shader->setUniform3f("color_specular", material_color_specular.r / 255.0f, material_color_specular.g / 255.0f, material_color_specular.b / 255.0f);
+      shader->setUniform1f("brightness", material_brightness);
+      shader->setUniform3f("light_position", light.getGlobalPosition());
+      shader->end();
+      break;
+
     case ShaderType::BLINN_PHONG:
       shader_name = "Blinn-Phong";
       shader = &shader_blinn_phong;
@@ -404,6 +458,22 @@ void Renderer::update_shader_type_no_tex()
       shader_active = ShaderType::GOURAUD_NO_TEX;
       break;
 
+    case ShaderType::GOOSH:
+      shader_active = ShaderType::GOOSH_NO_TEX;
+      break;
+
+    case ShaderType::GOOSH_NO_TEX:
+      shader_active = ShaderType::GOOSH_NO_TEX;
+      break;
+
+    case ShaderType::CEL:
+      shader_active = ShaderType::CEL_NO_TEX;
+      break;
+
+    case ShaderType::CEL_NO_TEX:
+      shader_active = ShaderType::CEL_NO_TEX;
+      break;
+
     case ShaderType::BLINN_PHONG:
       shader_active = ShaderType::BLINN_PHONG_NO_TEX;
       break;
@@ -456,6 +526,22 @@ void Renderer::update_shader_type_texture()
 
     case ShaderType::GOURAUD_NO_TEX:
       shader_active = ShaderType::GOURAUD;
+      break;
+
+    case ShaderType::GOOSH:
+      shader_active = ShaderType::GOOSH;
+      break;
+
+    case ShaderType::GOOSH_NO_TEX:
+      shader_active = ShaderType::GOOSH;
+      break;
+
+    case ShaderType::CEL:
+      shader_active = ShaderType::CEL;
+      break;
+
+    case ShaderType::CEL_NO_TEX:
+      shader_active = ShaderType::CEL;
       break;
 
     case ShaderType::BLINN_PHONG:
