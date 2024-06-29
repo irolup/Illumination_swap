@@ -54,10 +54,10 @@ void Application::setup()
     button_lambert.addListener(this, &Application::button_lambert_pressed);
     group_shader_type.add(button_phong.setup("phong"));
     button_phong.addListener(this, &Application::button_phong_pressed);
-    group_shader_type.add(button_gouraud.setup("gouraud"));
-    button_gouraud.addListener(this, &Application::button_gouraud_pressed);
     group_shader_type.add(button_blinn_phong.setup("blinn-phong"));
     button_blinn_phong.addListener(this, &Application::button_blinn_phong_pressed);
+    group_shader_type.add(button_gouraud.setup("gouraud"));
+    button_gouraud.addListener(this, &Application::button_gouraud_pressed);
     group_shader_type.add(button_pbr.setup("pbr"));
     button_pbr.addListener(this, &Application::button_pbr_pressed);
     group_shader_type.add(button_texture.setup("texture"));
@@ -282,16 +282,16 @@ void Application::button_phong_pressed()
     ofLog() << "<button phong pressed>";
 }
 
-void Application::button_gouraud_pressed()
-{
-    renderer.shader_active = ShaderType::GOURAUD;
-    ofLog() << "<button gouraud pressed>";
-}
-
 void Application::button_blinn_phong_pressed()
 {
     renderer.shader_active = ShaderType::BLINN_PHONG;
     ofLog() << "<button blinn-phong pressed>";
+}
+
+void Application::button_gouraud_pressed()
+{
+    renderer.shader_active = ShaderType::GOURAUD;
+    ofLog() << "<button gouraud pressed>";
 }
 
 void Application::button_pbr_pressed()
@@ -318,8 +318,8 @@ void Application::exit()
     button_color_fill.removeListener(this, &Application::button_color_fill_pressed);
     button_lambert.removeListener(this, &Application::button_lambert_pressed);
     button_phong.removeListener(this, &Application::button_phong_pressed);
-    button_gouraud.removeListener(this, &Application::button_gouraud_pressed);
     button_blinn_phong.removeListener(this, &Application::button_blinn_phong_pressed);
+    button_gouraud.removeListener(this, &Application::button_gouraud_pressed);
     button_pbr.removeListener(this, &Application::button_pbr_pressed);
     button_texture.removeListener(this, &Application::button_texture_pressed);
     button_no_texture.removeListener(this, &Application::button_no_texture_pressed);

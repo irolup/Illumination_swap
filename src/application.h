@@ -44,16 +44,16 @@ class Application : public ofBaseApp
   ofxButton button_color_fill;
   ofxButton button_lambert;
   ofxButton button_phong;
-  ofxButton button_gouraud;
   ofxButton button_blinn_phong;
+  ofxButton button_gouraud;
   ofxButton button_pbr;
   ofxButton button_texture;
   ofxButton button_no_texture;
   void button_color_fill_pressed();
   void button_lambert_pressed();
   void button_phong_pressed();
-  void button_gouraud_pressed();
   void button_blinn_phong_pressed();
+  void button_gouraud_pressed();
   void button_pbr_pressed();
   void button_texture_pressed();
   void button_no_texture_pressed();
