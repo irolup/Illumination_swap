@@ -8,12 +8,12 @@ This project demonstrates a scene using openFrameworks 0.12.0 and OpenGL 3.3, sh
 - **ofxGui**: Provides GUI components for user interaction.
 
 ## Shaders Supported
-- **color_fill**
-- **lambert**
-- **phong**
-- **gouraud**
-- **blinn_phong**
-- **pbr**
+- **Color fill**
+- **Lambert**
+- **Phong**
+- **Gouraud**
+- **Blinn_phong**
+- **PBR**
 
 ## Features
 - **Shader Selection**: Users can switch between different shader types.
@@ -23,27 +23,27 @@ This project demonstrates a scene using openFrameworks 0.12.0 and OpenGL 3.3, sh
 
 ## Screenshots
 
-### color_fill Shader
+### Color fill Shader
 ![color_fill_no_tex](bin/data/screenshots/color_fill_no_tex.png)
 ![color_fill_tex](bin/data/screenshots/color_fill_tex.png)
 
-### lambert Shader
+### Lambert Shader
 ![lambert_no_tex](bin/data/screenshots/lambert_no_tex.png)
 ![lambert_tex](bin/data/screenshots/lambert_tex.png)
 
-### phong Shader
+### Phong Shader
 ![phong_no_tex](bin/data/screenshots/phong_no_tex.png)
 ![phong_tex](bin/data/screenshots/phong_tex.png)
 
-### gouraud Shader
+### Gouraud Shader
 ![gouraud_no_tex](bin/data/screenshots/gouraud_no_tex.png)
 ![gouraud_tex](bin/data/screenshots/gouraud_tex.png)
 
-### blinn_phong Shader
+### Blinn_phong Shader
 ![blinn_phong_no_tex](bin/data/screenshots/blinn_phong_no_tex.png)
 ![blinn_phong_tex](bin/data/screenshots/blinn_phong_tex.png)
 
-### pbr Shader
+### PBR Shader
 ![pbr_no_tex](bin/data/screenshots/pbr_no_tex.png)
 ![pbr_tex](bin/data/screenshots/pbr_tex.png)
 
