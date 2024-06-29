@@ -12,6 +12,8 @@ This project demonstrates a scene using openFrameworks 0.12.0 and OpenGL 3.3, sh
 - **Lambert**
 - **Phong**
 - **Gouraud**
+- **goosh**
+- **cel**
 - **Blinn_phong**
 - **PBR**
 
@@ -38,6 +40,14 @@ This project demonstrates a scene using openFrameworks 0.12.0 and OpenGL 3.3, sh
 ### Gouraud Shader
 ![gouraud_no_tex](bin/data/screenshots/gouraud_no_tex.png)
 ![gouraud_tex](bin/data/screenshots/gouraud_tex.png)
+
+### goosh Shader
+![goosh_no_tex](bin/data/screenshots/goosh_no_tex.png)
+![goosh_tex](bin/data/screenshots/goosh_tex.png)
+
+### cel Shader
+![cel_no_tex](bin/data/screenshots/cel_no_tex.png)
+![cel_tex](bin/data/screenshots/cel_tex.png)
 
 ### Blinn_phong Shader
 ![blinn_phong_no_tex](bin/data/screenshots/blinn_phong_no_tex.png)
