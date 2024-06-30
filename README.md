@@ -12,8 +12,8 @@ This project demonstrates a scene using openFrameworks 0.12.0 and OpenGL 3.3, sh
 - **Lambert**
 - **Phong**
 - **Gouraud**
-- **goosh**
-- **cel**
+- **Goosh**
+- **Cel**
 - **Blinn_phong**
 - **PBR**
 
