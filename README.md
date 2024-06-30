@@ -43,11 +43,11 @@ This project demonstrates a scene using openFrameworks 0.12.0 and OpenGL 3.3, sh
 ![gouraud_no_tex](bin/data/screenshots/gouraud_no_tex.png)
 ![gouraud_tex](bin/data/screenshots/gouraud_tex.png)
 
-### goosh Shader
+### Goosh Shader
 ![goosh_no_tex](bin/data/screenshots/goosh_no_tex.png)
 ![goosh_tex](bin/data/screenshots/goosh_tex.png)
 
-### cel Shader
+### Cel Shader
 ![cel_no_tex](bin/data/screenshots/cel_no_tex.png)
 ![cel_tex](bin/data/screenshots/cel_tex.png)
 
@@ -63,7 +63,7 @@ This project demonstrates a scene using openFrameworks 0.12.0 and OpenGL 3.3, sh
 ![Normal Texture](bin/data/screenshots/normal_tex.png)
 
 #### Normal Mapping Perturbation
-![Normal Perturb No Texture](bin/data/screenshots/normal_perturb_no_tex.png)
+![Normal Perturb No Texture](bin/data/screenshots/normal_perturb_no_Tex.png)
 ![Normal Perturb](bin/data/screenshots/normal_pertub.png)
 
 ### PBR Shader
