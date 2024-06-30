@@ -57,7 +57,7 @@ This project demonstrates a scene using openFrameworks 0.12.0 and OpenGL 3.3, sh
 
 ### Normal Mapping
 #### Normal Mapping Without Texture
-![Normal No Texture](bin/data/screenshots/normal_no_tex.png)
+![Normal No Texture](bin/data/screenshots/normal_no_Tex.png)
 
 #### Normal Mapping With Texture
 ![Normal Texture](bin/data/screenshots/normal_tex.png)
