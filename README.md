@@ -63,5 +63,3 @@ This project demonstrates a scene using openFrameworks 0.12.0 and OpenGL 3.3, sh
 3. Install the required addons (`ofxAssimpModelLoader` and `ofxGui`).
 4. Build and run the project.
 
-## Additional Notes
-Include any additional information about setup, dependencies, or special considerations.
