@@ -15,6 +15,7 @@ This project demonstrates a scene using openFrameworks 0.12.0 and OpenGL 3.3, sh
 - **Goosh**
 - **Cel**
 - **Blinn_phong**
+- **Normal Mapping (with and without texture perturbation)**
 - **PBR**
 
 ## Features
@@ -22,6 +23,7 @@ This project demonstrates a scene using openFrameworks 0.12.0 and OpenGL 3.3, sh
 - **Texture Settings**: GUI controls allow adjusting texture settings.
 - **GUI Controls**: Provides options for changing colors, materials, and activating/deactivating textures.
 - **Textures**: Utilizes textures sourced from Polyhaven.
+- **Normal Perturbation**: A button to activate or deactivate normal perturbation, which changes the normal mapping shader behavior.
 
 ## Screenshots
 
@@ -52,6 +54,17 @@ This project demonstrates a scene using openFrameworks 0.12.0 and OpenGL 3.3, sh
 ### Blinn_phong Shader
 ![blinn_phong_no_tex](bin/data/screenshots/blinn_phong_no_tex.png)
 ![blinn_phong_tex](bin/data/screenshots/blinn_phong_tex.png)
+
+### Normal Mapping
+#### Normal Mapping Without Texture
+![Normal No Texture](bin/data/screenshots/normal_no_tex.png)
+
+#### Normal Mapping With Texture
+![Normal Texture](bin/data/screenshots/normal_tex.png)
+
+#### Normal Mapping Perturbation
+![Normal Perturb No Texture](bin/data/screenshots/normal_perturb_no_tex.png)
+![Normal Perturb](bin/data/screenshots/normal_pertub.png)
 
 ### PBR Shader
 ![pbr_no_tex](bin/data/screenshots/pbr_no_tex.png)
