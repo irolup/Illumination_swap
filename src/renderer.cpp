@@ -21,14 +21,16 @@ void Renderer::setup()
   shader_lambert_no_tex.load("shaders_no_tex/lambert_no_tex_330_vs.glsl","shaders_no_tex/lambert_no_tex_330_fs.glsl");  
   shader_phong.load("shaders/phong_330_vs.glsl", "shaders/phong_330_fs.glsl");
   shader_phong_no_tex.load("shaders_no_tex/phong_no_tex_330_vs.glsl", "shaders_no_tex/phong_no_tex_330_fs.glsl");
+  shader_blinn_phong.load("shaders/blinn_phong_330_vs.glsl", "shaders/blinn_phong_330_fs.glsl");
+  shader_blinn_phong_no_tex.load("shaders_no_tex/blinn_phong_no_tex_330_vs.glsl", "shaders_no_tex/blinn_phong_no_tex_330_fs.glsl");
   shader_gouraud.load("shaders/gouraud_330_vs.glsl", "shaders/gouraud_330_fs.glsl");
   shader_gouraud_no_tex.load("shaders_no_tex/gouraud_no_tex_330_vs.glsl", "shaders_no_tex/gouraud_no_tex_330_fs.glsl");
   shader_goosh.load("shaders/goosh_330_vs.glsl", "shaders/goosh_330_fs.glsl");
   shader_goosh_no_tex.load("shaders_no_tex/goosh_no_tex_330_vs.glsl", "shaders_no_tex/goosh_no_tex_330_fs.glsl");
   shader_cel.load("shaders/cel_330_vs.glsl", "shaders/cel_330_fs.glsl");
   shader_cel_no_tex.load("shaders_no_tex/cel_no_tex_330_vs.glsl", "shaders_no_tex/cel_no_tex_330_fs.glsl");
-  shader_blinn_phong.load("shaders/blinn_phong_330_vs.glsl", "shaders/blinn_phong_330_fs.glsl");
-  shader_blinn_phong_no_tex.load("shaders_no_tex/blinn_phong_no_tex_330_vs.glsl", "shaders_no_tex/blinn_phong_no_tex_330_fs.glsl");
+  shader_normal.load("shaders/normal_330_vs.glsl", "shaders/normal_330_fs.glsl");
+  shader_normal_no_tex.load("shaders_no_tex/normal_no_tex_330_vs.glsl", "shaders_no_tex/normal_no_tex_330_fs.glsl");
   shader_pbr.load("shaders/pbr_330_vs.glsl","shaders/pbr_330_fs.glsl");
   shader_pbr_no_tex.load("shaders_no_tex/pbr_no_tex_330_vs.glsl", "shaders_no_tex/pbr_no_tex_330_fs.glsl");
 
@@ -44,6 +46,9 @@ void Renderer::setup()
   texture_metallic.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
   texture_roughness.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
   texture_occlusion.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
+  texture_normal.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
+
+  perturb_normal = true;
 
   // initialiser les paramètres
   shader_active = ShaderType::PHONG;
@@ -274,6 +279,31 @@ void Renderer::update_shader_type()
       shader->end();
       break;
 
+    case ShaderType::BLINN_PHONG:
+      shader_name = "Blinn-Phong";
+      shader = &shader_blinn_phong;
+      shader->begin();
+      shader->setUniform3f("color_ambient",  material_color_ambient.r / 255.0f, material_color_ambient.g / 255.0f, material_color_ambient.b / 255.0f);
+      shader->setUniform3f("color_diffuse",  material_color_diffuse.r / 255.0f, material_color_diffuse.g / 255.0f, material_color_diffuse.b / 255.0f);
+      shader->setUniform3f("color_specular", material_color_specular.r / 255.0f, material_color_specular.g / 255.0f, material_color_specular.b / 255.0f);
+      shader->setUniform1f("brightness", material_brightness);
+      shader->setUniform3f("light_position", light.getGlobalPosition());
+      shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
+      shader->end();
+      break;
+
+    case ShaderType::BLINN_PHONG_NO_TEX:
+    shader_name = "Blinn-Phong (No Texture)";
+    shader = &shader_blinn_phong_no_tex;
+      shader->begin();
+      shader->setUniform3f("color_ambient",  material_color_ambient.r / 255.0f, material_color_ambient.g / 255.0f, material_color_ambient.b / 255.0f);
+      shader->setUniform3f("color_diffuse",  material_color_diffuse.r / 255.0f, material_color_diffuse.g / 255.0f, material_color_diffuse.b / 255.0f);
+      shader->setUniform3f("color_specular", material_color_specular.r / 255.0f, material_color_specular.g / 255.0f, material_color_specular.b / 255.0f);
+      shader->setUniform1f("brightness", material_brightness);
+      shader->setUniform3f("light_position", light.getGlobalPosition());
+      shader->end();
+      break;
+
     case ShaderType::GOURAUD:
       shader_name = "Gouraud";
       shader = &shader_gouraud;
@@ -349,9 +379,9 @@ void Renderer::update_shader_type()
       shader->end();
       break;
 
-    case ShaderType::BLINN_PHONG:
-      shader_name = "Blinn-Phong";
-      shader = &shader_blinn_phong;
+    case ShaderType::NORMAL:
+      shader_name = "Normal";
+      shader = &shader_normal;
       shader->begin();
       shader->setUniform3f("color_ambient",  material_color_ambient.r / 255.0f, material_color_ambient.g / 255.0f, material_color_ambient.b / 255.0f);
       shader->setUniform3f("color_diffuse",  material_color_diffuse.r / 255.0f, material_color_diffuse.g / 255.0f, material_color_diffuse.b / 255.0f);
@@ -359,18 +389,22 @@ void Renderer::update_shader_type()
       shader->setUniform1f("brightness", material_brightness);
       shader->setUniform3f("light_position", light.getGlobalPosition());
       shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
+      shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 2);
+      shader->setUniform1i("perturb_normal", perturb_normal);
       shader->end();
       break;
 
-    case ShaderType::BLINN_PHONG_NO_TEX:
-    shader_name = "Blinn-Phong (No Texture)";
-    shader = &shader_blinn_phong_no_tex;
+    case ShaderType::NORMAL_NO_TEX:
+      shader_name = "Normal (No Texture)";
+      shader = &shader_normal_no_tex;
       shader->begin();
       shader->setUniform3f("color_ambient",  material_color_ambient.r / 255.0f, material_color_ambient.g / 255.0f, material_color_ambient.b / 255.0f);
       shader->setUniform3f("color_diffuse",  material_color_diffuse.r / 255.0f, material_color_diffuse.g / 255.0f, material_color_diffuse.b / 255.0f);
       shader->setUniform3f("color_specular", material_color_specular.r / 255.0f, material_color_specular.g / 255.0f, material_color_specular.b / 255.0f);
       shader->setUniform1f("brightness", material_brightness);
       shader->setUniform3f("light_position", light.getGlobalPosition());
+      shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 1);
+      shader->setUniform1i("perturb_normal", perturb_normal);
       shader->end();
       break;
 
@@ -449,6 +483,14 @@ void Renderer::update_shader_type_no_tex()
     case ShaderType::PHONG_NO_TEX:
       shader_active = ShaderType::PHONG_NO_TEX;
       break;
+    
+    case ShaderType::BLINN_PHONG:
+      shader_active = ShaderType::BLINN_PHONG_NO_TEX;
+      break;
+
+    case ShaderType::BLINN_PHONG_NO_TEX:
+      shader_active = ShaderType::BLINN_PHONG_NO_TEX;
+      break;  
 
     case ShaderType::GOURAUD:
       shader_active = ShaderType::GOURAUD_NO_TEX;
@@ -474,12 +516,12 @@ void Renderer::update_shader_type_no_tex()
       shader_active = ShaderType::CEL_NO_TEX;
       break;
 
-    case ShaderType::BLINN_PHONG:
-      shader_active = ShaderType::BLINN_PHONG_NO_TEX;
+    case ShaderType::NORMAL:
+      shader_active = ShaderType::NORMAL_NO_TEX;
       break;
-
-    case ShaderType::BLINN_PHONG_NO_TEX:
-      shader_active = ShaderType::BLINN_PHONG_NO_TEX;
+    
+    case ShaderType::NORMAL_NO_TEX:
+      shader_active = ShaderType::NORMAL_NO_TEX;
       break;
 
     case ShaderType::PBR:
@@ -520,6 +562,14 @@ void Renderer::update_shader_type_texture()
       shader_active = ShaderType::PHONG;
       break;
 
+    case ShaderType::BLINN_PHONG:
+      shader_active = ShaderType::BLINN_PHONG;
+      break;
+
+    case ShaderType::BLINN_PHONG_NO_TEX:
+      shader_active = ShaderType::BLINN_PHONG;
+      break;
+
     case ShaderType::GOURAUD:
       shader_active = ShaderType::GOURAUD;
       break;
@@ -544,12 +594,12 @@ void Renderer::update_shader_type_texture()
       shader_active = ShaderType::CEL;
       break;
 
-    case ShaderType::BLINN_PHONG:
-      shader_active = ShaderType::BLINN_PHONG;
+    case ShaderType::NORMAL:
+      shader_active = ShaderType::NORMAL;
       break;
-
-    case ShaderType::BLINN_PHONG_NO_TEX:
-      shader_active = ShaderType::BLINN_PHONG;
+    
+    case ShaderType::NORMAL_NO_TEX:
+      shader_active = ShaderType::NORMAL;
       break;
 
     case ShaderType::PBR:

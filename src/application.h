@@ -48,9 +48,11 @@ class Application : public ofBaseApp
   ofxButton button_gouraud;
   ofxButton button_goosh;
   ofxButton button_cel;
+  ofxButton button_normal;
   ofxButton button_pbr;
   ofxButton button_texture;
   ofxButton button_no_texture;
+  ofxButton button_perturb_normal;
   void button_color_fill_pressed();
   void button_lambert_pressed();
   void button_phong_pressed();
@@ -58,10 +60,11 @@ class Application : public ofBaseApp
   void button_gouraud_pressed();
   void button_goosh_pressed();
   void button_cel_pressed();
+  void button_normal_pressed();
   void button_pbr_pressed();
   void button_texture_pressed();
   void button_no_texture_pressed();
-
+  void button_perturb_normal_pressed();
 
   float time_current;
   float time_last;

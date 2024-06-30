@@ -62,12 +62,16 @@ void Application::setup()
     button_goosh.addListener(this, &Application::button_goosh_pressed);
     group_shader_type.add(button_cel.setup("cel"));
     button_cel.addListener(this, &Application::button_cel_pressed);
+    group_shader_type.add(button_normal.setup("normal"));
+    button_normal.addListener(this, &Application::button_normal_pressed);
     group_shader_type.add(button_pbr.setup("pbr"));
     button_pbr.addListener(this, &Application::button_pbr_pressed);
     group_shader_type.add(button_texture.setup("texture"));
     button_texture.addListener(this, &Application::button_texture_pressed);
     group_shader_type.add(button_no_texture.setup("no texture"));
     button_no_texture.addListener(this, &Application::button_no_texture_pressed);
+    group_shader_type.add(button_perturb_normal.setup("perturb normal"));
+    button_perturb_normal.addListener(this, &Application::button_perturb_normal_pressed);
     gui.add(&group_shader_type);
     
 
@@ -310,6 +314,12 @@ void Application::button_cel_pressed()
     ofLog() << "<button cel pressed>";
 }
 
+void Application::button_normal_pressed()
+{
+    renderer.shader_active = ShaderType::NORMAL;
+    ofLog() << "<button normal pressed>";
+}
+
 void Application::button_pbr_pressed()
 {
     renderer.shader_active = ShaderType::PBR;
@@ -328,6 +338,12 @@ void Application::button_no_texture_pressed()
     ofLog() << "<button no texture pressed>";
 }
 
+void Application::button_perturb_normal_pressed()
+{
+    renderer.perturb_normal = !renderer.perturb_normal;
+    ofLog() << "<button perturb normal is " << renderer.perturb_normal << ">";
+}
+
 void Application::exit()
 {
     button_reset.removeListener(this, &Application::button_reset_pressed);
@@ -338,6 +354,7 @@ void Application::exit()
     button_gouraud.removeListener(this, &Application::button_gouraud_pressed);
     button_goosh.removeListener(this, &Application::button_goosh_pressed);
     button_cel.removeListener(this, &Application::button_cel_pressed);
+    button_normal.removeListener(this, &Application::button_normal_pressed);
     button_pbr.removeListener(this, &Application::button_pbr_pressed);
     button_texture.removeListener(this, &Application::button_texture_pressed);
     button_no_texture.removeListener(this, &Application::button_no_texture_pressed);
