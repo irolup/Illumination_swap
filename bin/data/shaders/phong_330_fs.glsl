@@ -21,6 +21,34 @@ uniform vec3 light_position;
 
 // texture diffuse
 uniform sampler2D texture_diffuse;
+uniform sampler2D texture_normal;
+
+mat3 CotangentFrame(in vec3 N, in vec3 p, in vec2 uv) {
+    vec3 dp1 = dFdx(p);
+    vec3 dp2 = dFdy(p);
+    vec2 duv1 = dFdx(uv);
+    vec2 duv2 = dFdy(uv);
+
+    vec3 dp2perp = cross(dp2, N);
+    vec3 dp1perp = cross(N, dp1);
+    vec3 T = dp2perp * duv1.x + dp1perp * duv2.x;
+    vec3 B = dp2perp * duv1.y + dp1perp * duv2.y;
+
+    float invmax = inversesqrt(max(dot(T, T), dot(B, B)));
+    return mat3(T * invmax, B * invmax, N);
+}
+
+vec3 PerturbNormal(in vec3 N, in vec3 V, in vec2 texcoord) {
+
+    vec3 map = texture(texture_normal, texcoord).rgb;
+
+    map = map * 2.0 - 1.0;
+
+
+    mat3 TBN = CotangentFrame(N, -V, texcoord);
+    return normalize(TBN * map);
+}
+
 
 void main()
 {
