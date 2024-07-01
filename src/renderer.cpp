@@ -241,6 +241,8 @@ void Renderer::update_shader_type()
       shader->setUniform3f("color_diffuse",  material_color_diffuse.r / 255.0f, material_color_diffuse.g / 255.0f, material_color_diffuse.b / 255.0f);
       shader->setUniform3f("light_position", light.getGlobalPosition());
       shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
+      shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 2);
+      shader->setUniform1i("perturb_normal", perturb_normal);
       shader->end();
       break;
 
@@ -264,6 +266,8 @@ void Renderer::update_shader_type()
       shader->setUniform1f("brightness", material_brightness);
       shader->setUniform3f("light_position", light.getGlobalPosition());
       shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
+      shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 2);
+      shader->setUniform1i("perturb_normal", perturb_normal);
       shader->end();
       break;
 
@@ -289,6 +293,9 @@ void Renderer::update_shader_type()
       shader->setUniform1f("brightness", material_brightness);
       shader->setUniform3f("light_position", light.getGlobalPosition());
       shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
+      shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 2);
+      shader->setUniform1i("perturb_normal", perturb_normal);
+      
       shader->end();
       break;
 
@@ -339,6 +346,8 @@ void Renderer::update_shader_type()
       shader->setUniform1f("brightness", material_brightness);
       shader->setUniform3f("light_position", light.getGlobalPosition());
       shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
+      shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 2);
+      shader->setUniform1i("perturb_normal", perturb_normal);
       shader->end();
       break;
 

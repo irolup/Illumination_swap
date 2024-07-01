@@ -10,6 +10,8 @@ out vec4 fragment_color;
 
 uniform sampler2D texture_diffuse; // The texture sampler
 
+
+
 void main()
 {
   // texture diffuse
