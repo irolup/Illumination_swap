@@ -72,6 +72,8 @@ void Application::setup()
     button_no_texture.addListener(this, &Application::button_no_texture_pressed);
     group_shader_type.add(button_perturb_normal.setup("perturb normal"));
     button_perturb_normal.addListener(this, &Application::button_perturb_normal_pressed);
+    group_shader_type.add(button_parallax.setup("Parallax"));
+    button_parallax.addListener(this, &Application::button_parallax_pressed);
     gui.add(&group_shader_type);
     
 
@@ -342,6 +344,12 @@ void Application::button_perturb_normal_pressed()
 {
     renderer.perturb_normal = !renderer.perturb_normal;
     ofLog() << "<button perturb normal is " << renderer.perturb_normal << ">";
+}
+
+void Application::button_parallax_pressed()
+{
+  renderer.parallax_active = !renderer.parallax_active;
+  ofLog() << "<button perturb normal is " << renderer.parallax_active << ">";
 }
 
 void Application::exit()

@@ -83,7 +83,9 @@ public:
   ofImage texture_roughness;
   ofImage texture_occlusion;
   ofImage texture_normal;
-  bool perturb_normal;  
+  ofImage texture_displacement;
+  bool perturb_normal;
+  bool parallax_active;  
   ofLight light;
   ofColor light_color;
   float light_intensity;

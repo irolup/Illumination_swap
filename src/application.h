@@ -53,6 +53,7 @@ class Application : public ofBaseApp
   ofxButton button_texture;
   ofxButton button_no_texture;
   ofxButton button_perturb_normal;
+  ofxButton button_parallax;
   void button_color_fill_pressed();
   void button_lambert_pressed();
   void button_phong_pressed();
@@ -65,6 +66,7 @@ class Application : public ofBaseApp
   void button_texture_pressed();
   void button_no_texture_pressed();
   void button_perturb_normal_pressed();
+  void button_parallax_pressed();
 
   float time_current;
   float time_last;

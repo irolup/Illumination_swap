@@ -40,6 +40,7 @@ void Renderer::setup()
   texture_roughness.load("texture/rough.jpg");
   texture_occlusion.load("texture/ao.jpg");
   texture_normal.load("texture/normal.jpg");
+  texture_displacement.load("texture/displacement.jpg");
 
   // paramètres des textures du matériau
   texture_diffuse.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
@@ -49,6 +50,7 @@ void Renderer::setup()
   texture_normal.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 
   perturb_normal = true;
+  parallax_active = false;
 
   // initialiser les paramètres
   shader_active = ShaderType::PHONG;
