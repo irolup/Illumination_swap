@@ -55,6 +55,11 @@ uniform sampler2D texture_roughness;
 // texture d'occlusion ambiante
 uniform sampler2D texture_occlusion;
 
+//texture normale
+uniform sampler2D texture_normal;
+
+uniform bool perturb_normal;
+
 // position d'une source de lumière
 uniform vec3 light_position;
 
@@ -63,6 +68,32 @@ uniform vec3 light_color;
 
 // intensité de la source de lumière
 uniform float light_intensity;
+
+mat3 CotangentFrame(in vec3 N, in vec3 p, in vec2 uv) {
+  vec3 dp1 = dFdx(p);
+  vec3 dp2 = dFdy(p);
+  vec2 duv1 = dFdx(uv);
+  vec2 duv2 = dFdy(uv);
+
+  vec3 dp2perp = cross(dp2, N);
+  vec3 dp1perp = cross(N, dp1);
+  vec3 T = dp2perp * duv1.x + dp1perp * duv2.x;
+  vec3 B = dp2perp * duv1.y + dp1perp * duv2.y;
+
+  float invmax = inversesqrt(max(dot(T, T), dot(B, B)));
+  return mat3(T * invmax, B * invmax, N);
+}
+
+vec3 PerturbNormal(in vec3 N, in vec3 V, in vec2 TexCoord) {
+
+  vec3 map = texture(texture_normal, TexCoord).rgb;
+
+  map = map * 2.0 - 1.0;
+
+
+  mat3 TBN = CotangentFrame(N, -V, TexCoord);
+  return normalize(TBN * map);
+}
 
 // fonction de distribution des microfacettes (Trowbridge-Reitz)
 float trowbridge_reitz(vec3 n, vec3 h, float roughness)
@@ -128,6 +159,15 @@ vec3 brdf_cook_torrance()
 
   // calculer la direction de la surface vers la lumière (l)
   vec3 l = normalize(light_position - surface_position);
+
+  if (perturb_normal)
+  {
+    n = PerturbNormal(n, normalize(surface_position), surface_texcoord);
+  }
+  else
+  {
+    n = normalize(surface_normal);
+  }
 
   // calculer la direction de la surface vers la caméra (v)
   vec3 v = normalize(-surface_position);

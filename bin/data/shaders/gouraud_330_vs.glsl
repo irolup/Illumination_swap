@@ -8,10 +8,13 @@ in vec2 texcoord;
 // attributs en sortie
 out vec3 surface_color;
 out vec2 TexCoord;
+out vec3 fragPos;
+out vec3 fragNormal;
 
 // attributs uniformes
 uniform mat4x4 modelViewMatrix;
 uniform mat4x4 projectionMatrix;
+uniform sampler2D texture_normal;
 
 // couleurs de réflexion du matériau
 uniform vec3 color_ambient;
@@ -64,6 +67,8 @@ void main()
   //vec3 texture_color = texture(texture_diffuse, texcoord.xy).rgb;
 
   TexCoord = texcoord;
+  fragPos = surface_position;
+  fragNormal = n;
 
   // calculer la couleur du fragment
   surface_color = vec3(
