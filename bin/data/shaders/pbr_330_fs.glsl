@@ -58,6 +58,12 @@ uniform sampler2D texture_occlusion;
 //texture normale
 uniform sampler2D texture_normal;
 
+//texture de déplacement
+uniform sampler2D texture_displacement;
+
+// activation du mappage parallaxe
+uniform bool parallax_active;
+
 uniform bool perturb_normal;
 
 // position d'une source de lumière
@@ -68,6 +74,39 @@ uniform vec3 light_color;
 
 // intensité de la source de lumière
 uniform float light_intensity;
+
+vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir) {
+  const float minLayers = 8;
+  const float maxLayers = 32;
+  float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDir)));
+
+  float layerDepth = 1.0 / numLayers;
+  float currentLayerDepth = 0.0;
+  vec2 P = viewDir.xy / viewDir.z * 0.1; // parallax scale peut mettre variable pour controle
+  vec2 deltaTexCoords = P / numLayers;
+
+  vec2 currentTexCoords = texCoords;
+  float currentDepthMapValue = texture(texture_displacement, currentTexCoords).r;
+
+  while (currentLayerDepth < currentDepthMapValue) {
+    currentTexCoords -= deltaTexCoords;
+    currentDepthMapValue = texture(texture_displacement, currentTexCoords).r;
+    currentLayerDepth += layerDepth;
+  }
+
+  // Get texture coordinates before collision (reverse operations)
+  vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
+
+  // Get depth after and before collision for linear interpolation
+  float afterDepth  = currentDepthMapValue - currentLayerDepth;
+  float beforeDepth = texture(texture_displacement, prevTexCoords).r - currentLayerDepth + layerDepth;
+
+  // Interpolation of texture coordinates
+  float weight = afterDepth / (afterDepth - beforeDepth);
+  vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
+
+  return finalTexCoords;
+}
 
 mat3 CotangentFrame(in vec3 N, in vec3 p, in vec2 uv) {
   vec3 dp1 = dFdx(p);
@@ -156,13 +195,20 @@ vec3 brdf_cook_torrance()
 {
   // re-normaliser la normale après interpolation
   vec3 n = normalize(surface_normal);
+  vec2 texCoords = surface_texcoord;
+
+  if (parallax_active)
+  {
+    vec3 viewDir = normalize(-surface_position);
+    texCoords = ParallaxMapping(texCoords, viewDir);
+  }
 
   // calculer la direction de la surface vers la lumière (l)
   vec3 l = normalize(light_position - surface_position);
 
   if (perturb_normal)
   {
-    n = PerturbNormal(n, normalize(surface_position), surface_texcoord);
+    n = PerturbNormal(n, normalize(surface_position), texCoords);
   }
   else
   {
@@ -176,19 +222,19 @@ vec3 brdf_cook_torrance()
   vec3 h = normalize(l + v);
 
   // échantillonage de la texture diffuse
-  vec3 texture_sample_diffuse = texture(texture_diffuse, surface_texcoord).rgb;
+  vec3 texture_sample_diffuse = texture(texture_diffuse, texCoords).rgb;
 
   // conversion de l'échantillon de la texture diffuse de l'espace gamma vers l'espace linéaire
   texture_sample_diffuse = pow(texture_sample_diffuse, vec3(tone_mapping_gamma));
 
   // échantillonage de la texture de métallicité
-  float texture_sample_metallic = texture(texture_metallic, surface_texcoord).r;
+  float texture_sample_metallic = texture(texture_metallic, texCoords).r;
 
   // échantillonage de la texture de rugosité
-  float texture_sample_roughness = texture(texture_roughness, surface_texcoord).r;
+  float texture_sample_roughness = texture(texture_roughness, texCoords).r;
 
   // échantillonage de la texture d'occlusion
-  float texture_sample_occlusion = texture(texture_occlusion, surface_texcoord).r;
+  float texture_sample_occlusion = texture(texture_occlusion, texCoords).r;
 
   // facteurs du matériau combinées avec les échantillons de couleur
   float metallic = material_metallic * texture_sample_metallic;

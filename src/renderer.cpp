@@ -244,6 +244,8 @@ void Renderer::update_shader_type()
       shader->setUniform3f("light_position", light.getGlobalPosition());
       shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
       shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 2);
+      shader->setUniformTexture("texture_displacement", texture_displacement.getTexture(), 3);
+      shader->setUniform1i("parallax_active", parallax_active);
       shader->setUniform1i("perturb_normal", perturb_normal);
       shader->end();
       break;
@@ -269,7 +271,9 @@ void Renderer::update_shader_type()
       shader->setUniform3f("light_position", light.getGlobalPosition());
       shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
       shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 2);
+      shader->setUniformTexture("texture_displacement", texture_displacement.getTexture(), 3);
       shader->setUniform1i("perturb_normal", perturb_normal);
+      shader->setUniform1i("parallax_active", parallax_active);
       shader->end();
       break;
 
@@ -296,7 +300,9 @@ void Renderer::update_shader_type()
       shader->setUniform3f("light_position", light.getGlobalPosition());
       shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
       shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 2);
+      shader->setUniformTexture("texture_displacement", texture_displacement.getTexture(), 3);
       shader->setUniform1i("perturb_normal", perturb_normal);
+      shader->setUniform1i("parallax_active", parallax_active);
       
       shader->end();
       break;
@@ -324,6 +330,8 @@ void Renderer::update_shader_type()
       shader->setUniform3f("light_position", light.getGlobalPosition());
       shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
       shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 2);
+      shader->setUniformTexture("texture_displacement", texture_displacement.getTexture(), 3);
+      shader->setUniform1i("parallax_active", parallax_active);
       shader->setUniform1i("perturb_normal", perturb_normal);
       shader->end();
       break;
@@ -351,6 +359,8 @@ void Renderer::update_shader_type()
       shader->setUniform3f("light_position", light.getGlobalPosition());
       shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
       shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 2);
+      shader->setUniformTexture("texture_displacement", texture_displacement.getTexture(), 3);
+      shader->setUniform1i("parallax_active", parallax_active);
       shader->setUniform1i("perturb_normal", perturb_normal);
       shader->end();
       break;
@@ -378,6 +388,8 @@ void Renderer::update_shader_type()
       shader->setUniform3f("light_position", light.getGlobalPosition());
       shader->setUniformTexture("texture_diffuse", texture_diffuse.getTexture(), 1);
       shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 2);
+      shader->setUniformTexture("texture_displacement", texture_displacement.getTexture(), 3);
+      shader->setUniform1i("parallax_active", parallax_active);
       shader->setUniform1i("perturb_normal", perturb_normal);
       shader->end();
       break;
@@ -440,12 +452,14 @@ void Renderer::update_shader_type()
       shader->setUniformTexture("texture_roughness", texture_roughness.getTexture(), 3);
       shader->setUniformTexture("texture_occlusion", texture_occlusion.getTexture(), 4);
       shader->setUniformTexture("texture_normal", texture_normal.getTexture(), 5);
+      shader->setUniformTexture("texture_displacement", texture_displacement.getTexture(), 6);
       shader->setUniform1f("light_intensity", light_intensity);
       shader->setUniform3f("light_color", light_color.r / 255.0f, light_color.g / 255.0f, light_color.b / 255.0f);
       shader->setUniform3f("light_position", light.getGlobalPosition());
       shader->setUniform1f("tone_mapping_exposure", tone_mapping_exposure);
       shader->setUniform1f("tone_mapping_gamma", tone_mapping_gamma);
       shader->setUniform1i("tone_mapping_toggle", tone_mapping_toggle);
+      shader->setUniform1i("parallax_active", parallax_active);
       shader->setUniform1i("perturb_normal", perturb_normal);
       shader->end();
       break;

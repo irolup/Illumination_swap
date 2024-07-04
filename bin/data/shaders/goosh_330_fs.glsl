@@ -22,8 +22,44 @@ uniform vec3 light_position;
 // texture diffuse
 uniform sampler2D texture_diffuse;
 uniform sampler2D texture_normal;
+uniform sampler2D texture_displacement;
+
+uniform bool parallax_active;
 
 uniform bool perturb_normal;
+
+vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir) {
+  const float minLayers = 8;
+  const float maxLayers = 32;
+  float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDir)));
+
+  float layerDepth = 1.0 / numLayers;
+  float currentLayerDepth = 0.0;
+  vec2 P = viewDir.xy / viewDir.z * 0.1; // parallax scale peut mettre variable pour controle
+  vec2 deltaTexCoords = P / numLayers;
+
+  vec2 currentTexCoords = texCoords;
+  float currentDepthMapValue = texture(texture_displacement, currentTexCoords).r;
+
+  while (currentLayerDepth < currentDepthMapValue) {
+    currentTexCoords -= deltaTexCoords;
+    currentDepthMapValue = texture(texture_displacement, currentTexCoords).r;
+    currentLayerDepth += layerDepth;
+  }
+
+  // Get texture coordinates before collision (reverse operations)
+  vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
+
+  // Get depth after and before collision for linear interpolation
+  float afterDepth  = currentDepthMapValue - currentLayerDepth;
+  float beforeDepth = texture(texture_displacement, prevTexCoords).r - currentLayerDepth + layerDepth;
+
+  // Interpolation of texture coordinates
+  float weight = afterDepth / (afterDepth - beforeDepth);
+  vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
+
+  return finalTexCoords;
+}
 
 mat3 CotangentFrame(in vec3 N, in vec3 p, in vec2 uv) {
   vec3 dp1 = dFdx(p);
@@ -55,13 +91,19 @@ void main()
 {
     // re-normaliser la normale après interpolation
     vec3 n = normalize(surface_normal);
+    vec3 viewDir = normalize(-surface_position);
+
+    vec2 texCoords = TexCoord;
+    if (parallax_active) {
+      texCoords = ParallaxMapping(texCoords, viewDir);
+    }
 
     // calculer la direction de la surface vers la lumière (l)
     vec3 l = normalize(light_position - surface_position);
 
     if (perturb_normal)
     {
-        n = PerturbNormal(normalize(surface_normal), normalize(surface_position), TexCoord);
+        n = PerturbNormal(normalize(surface_normal), viewDir, texCoords);
     }
     else
     {
@@ -91,10 +133,10 @@ void main()
     vec3 goosh_color = vec3(0.2, 0.5, 0.7); // teinte personnalisée pour l'effet "Goosh"
     
     // ajout d'une perturbation en fonction des coordonnées de texture
-    float perturbation = sin(TexCoord.x * 10.0) * cos(TexCoord.y * 10.0);
+    float perturbation = sin(texCoords.x * 10.0) * cos(texCoords.y * 10.0);
 
     // calcul de la couleur finale avec l'effet de perturbation
-    vec4 tex_color = texture(texture_diffuse, TexCoord + vec2(perturbation * 0.01));
+    vec4 tex_color = texture(texture_diffuse, texCoords + vec2(perturbation * 0.01));
 
     // ajouter l'effet Goosh à la couleur calculée
     vec3 final_color = color_ambient +
