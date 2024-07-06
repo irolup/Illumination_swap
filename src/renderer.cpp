@@ -104,6 +104,13 @@ void Renderer::reset()
   offset_x = initial_x;
   offset_z = initial_z;
 
+  //primites
+  box.setPosition(position_cube);
+  box.set(scale_cube);
+  
+  sphere.setPosition(position_sphere);
+  sphere.setRadius(scale_sphere);
+
   ofLog() << "<reset>";
 }
 
@@ -129,25 +136,20 @@ void Renderer::draw()
 {
   // activer l'occlusion en profondeur
   ofEnableDepthTest();
-
   // activer l'éclairage dynamique
-  ofEnableLighting();
-
+  //ofEnableLighting();
   // activer la lumière dynamique
-  light.enable();
+  //light.enable();
 
   // activer le shader
   shader->begin();
   //apply_uniform_by_type();
 
   ofPushMatrix();
-
     // transformer l'origine de la scène au milieu de la fenêtre d'affichage
     ofTranslate(center_x + offset_x, center_y, offset_z);
-
     // rotation globale
     ofRotateDeg(rotation_y, 0.0f, 1.0f, 0.0f);
-
     ofPushMatrix();
 
       // positionnner le cube
@@ -160,7 +162,8 @@ void Renderer::draw()
       ofRotateDeg(45.0f, 1.0f, 0.0f, 0.0f);
 
       // dessiner un cube
-      ofDrawBox(0.0f, 0.0f, 0.0f, scale_cube);
+      box.draw();
+      //ofDrawBox(0.0f, 0.0f, 0.0f, scale_cube);
 
     ofPopMatrix();
 
@@ -173,7 +176,8 @@ void Renderer::draw()
         position_sphere.z);
 
       // dessiner une sphère
-      ofDrawSphere(0.0f, 0.0f, 0.0f, scale_sphere);
+      sphere.draw();
+      //ofDrawSphere(0.0f, 0.0f, 0.0f, scale_sphere);
 
     ofPopMatrix();
 
@@ -202,10 +206,10 @@ void Renderer::draw()
   shader->end();
 
   // désactiver la lumière
-  light.disable();
+  //light.disable();
 
   // désactiver l'éclairage dynamique
-  ofDisableLighting();
+  //ofDisableLighting();
 
   // désactiver l'occlusion en profondeur
   ofDisableDepthTest();

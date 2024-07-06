@@ -84,6 +84,8 @@ class Application : public ofBaseApp
   bool is_key_press_q;
   bool is_key_press_e;
 
+  void update_key_press();
+
   void setup();
   void reset();
   void update();

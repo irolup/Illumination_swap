@@ -101,24 +101,43 @@ void Application::reset()
       toggle_tone_mapping.set("reinhard", false);
 }
 
+void Application::update_key_press()
+{
+    if (is_key_press_up)
+    {
+      renderer.offset_z += renderer.delta_z * time_elapsed;
+    }
+    if (is_key_press_down)
+    {
+      renderer.offset_z -= renderer.delta_z * time_elapsed;
+    }
+    if (is_key_press_left)
+    {
+      renderer.offset_x += renderer.delta_x * time_elapsed;
+    }
+    if (is_key_press_right)
+    {
+      renderer.offset_x -= renderer.delta_x * time_elapsed;
+    }
+    if (is_key_press_q)
+    {
+      renderer.rotation_y += renderer.delta_y * time_elapsed;
+    }
+    if (is_key_press_e)
+    {
+      renderer.rotation_y -= renderer.delta_y * time_elapsed;
+    }
+}
+
 void Application::update()
 {
   ofSetWindowTitle("modèle d'illumination : " + renderer.shader_name + " (1-5 ↑↓←→ r)");
     time_current = ofGetElapsedTimef();
     time_elapsed = time_current - time_last;
-    time_last = time_current;   
-    if (is_key_press_up)
-      renderer.offset_z += renderer.delta_z * time_elapsed;
-    if (is_key_press_down)
-      renderer.offset_z -= renderer.delta_z * time_elapsed;
-    if (is_key_press_left)
-      renderer.offset_x += renderer.delta_x * time_elapsed;
-    if (is_key_press_right)
-      renderer.offset_x -= renderer.delta_x * time_elapsed;
-    if (is_key_press_q)
-      renderer.rotation_y += renderer.delta_y * time_elapsed;
-    if (is_key_press_e)
-      renderer.rotation_y -= renderer.delta_y * time_elapsed;   
+    time_last = time_current;
+
+    update_key_press();
+   
     renderer.material_color_ambient = color_picker_ambient;
     renderer.material_color_diffuse = color_picker_diffuse;
     renderer.material_color_specular = color_picker_specular;   

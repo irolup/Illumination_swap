@@ -114,6 +114,9 @@ public:
   float center_y;
 
 
+  //primitives
+  ofBoxPrimitive box;
+  ofSpherePrimitive sphere;
 
   void setup();
   void update();
