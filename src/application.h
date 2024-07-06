@@ -4,10 +4,12 @@
 #include "ofxGui.h"
 
 #include "renderer.h"
+#include "camera.h"
 
 class Application : public ofBaseApp
 {
   Renderer renderer;
+  Camera camera;
 
   ofxPanel gui;
 

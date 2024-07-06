@@ -76,11 +76,13 @@ void Application::setup()
     button_parallax.addListener(this, &Application::button_parallax_pressed);
     gui.add(&group_shader_type);
     
+    camera.setup();
 
 }
 
 void Application::reset()
 {
+    camera.reset();
     renderer.reset();   
     color_picker_ambient.set("ambient", renderer.material_color_ambient, ofColor(0, 0), ofColor(255, 255));
     color_picker_diffuse.set("diffuse", renderer.material_color_diffuse, ofColor(0, 0), ofColor(255, 255));
@@ -131,12 +133,13 @@ void Application::update_key_press()
 
 void Application::update()
 {
-  ofSetWindowTitle("modèle d'illumination : " + renderer.shader_name + " (1-5 ↑↓←→ r)");
+    camera.update();
+    ofSetWindowTitle("modèle d'illumination : " + renderer.shader_name + " (1-5 ↑↓←→ r)");
     time_current = ofGetElapsedTimef();
     time_elapsed = time_current - time_last;
     time_last = time_current;
 
-    update_key_press();
+    //update_key_press();
    
     renderer.material_color_ambient = color_picker_ambient;
     renderer.material_color_diffuse = color_picker_diffuse;
@@ -161,10 +164,14 @@ void Application::update()
 
 void Application::draw()
 {
+  camera.begin();
   renderer.draw();
+  camera.end();
 
-  if (toggle_ui)
+  if (toggle_ui){
     gui.draw();
+    camera.drawGui();
+    }
 }
 
 void Application::keyPressed(int key)
@@ -173,10 +180,12 @@ void Application::keyPressed(int key)
   {
     case 97:  // touche a
       is_key_press_left = true;
+      camera.is_key_press_a = true;
       break;
 
     case 100: // touche d
       is_key_press_right = true;
+      camera.is_key_press_d = true;
       break;
 
     case 101: // touche q
@@ -189,10 +198,12 @@ void Application::keyPressed(int key)
 
     case 115: // touche s
       is_key_press_down = true;
+      camera.is_key_press_s = true;
       break;
 
     case 119: // touche w
       is_key_press_up = true;
+      camera.is_key_press_w = true;
       break;
 
     case OF_KEY_LEFT:  // touche ←
@@ -222,10 +233,12 @@ void Application::keyReleased(int key)
   {
     case 97:  // touche a
       is_key_press_left = false;
+      camera.is_key_press_a = false;
       break;
 
     case 100: // touche d
       is_key_press_right = false;
+      camera.is_key_press_d = false;
       break;
 
     case 101: // touche q
@@ -248,6 +261,7 @@ void Application::keyReleased(int key)
 
     case 115: // touche s
       is_key_press_down = false;
+      camera.is_key_press_s = false;
       break;
 
     case 117: // touche u
@@ -257,6 +271,7 @@ void Application::keyReleased(int key)
 
     case 119: // touche w
       is_key_press_up = false;
+      camera.is_key_press_w = false;
       break;
 
     case OF_KEY_LEFT:  // touche ←

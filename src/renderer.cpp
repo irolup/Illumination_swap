@@ -65,14 +65,14 @@ void Renderer::reset()
   initial_x = 0.0f;
   initial_z = -100.0f;
   rotation_y = 0.0f;
-  scale_cube = 110.0f;
-  scale_sphere = 90.0f;
+  scale_cube = 3.0f;
+  scale_sphere = 3.0f;
   scale_teapot = 0.618f;
 
   // positions initiales des maillages géométriques
-  position_cube.set(-ofGetWidth() * (1.0f / 4.0f), 0.0f, 0.0f);
-  position_sphere.set(0.0f, 0.0f, 0.0f);
-  position_teapot.set(ofGetWidth() * (1.0f / 4.0f), 50.0f, 0.0f);
+  position_cube.set(-10.0f, 0.0f, -30.0f);
+  position_sphere.set(0.0f, 0.0f, -30.0f);
+  position_teapot.set(10.0f, 0.0f, -30.0f);
 
   // paramètres du matériau
   material_color_ambient = ofColor(0.1f * 255, 0.1f * 255, 0.1f * 255); // ofColor(26, 26, 26);
@@ -145,62 +145,18 @@ void Renderer::draw()
   shader->begin();
   //apply_uniform_by_type();
 
-  ofPushMatrix();
-    // transformer l'origine de la scène au milieu de la fenêtre d'affichage
-    ofTranslate(center_x + offset_x, center_y, offset_z);
-    // rotation globale
-    ofRotateDeg(rotation_y, 0.0f, 1.0f, 0.0f);
-    ofPushMatrix();
 
-      // positionnner le cube
-      ofTranslate(
-        position_cube.x,
-        position_cube.y,
-        position_cube.z);
+  box.draw();
+  //ofDrawBox(0.0f, 0.0f, 0.0f, scale_cube);
 
-      // rotation locale
-      ofRotateDeg(45.0f, 1.0f, 0.0f, 0.0f);
+  sphere.draw();
+  //ofDrawSphere(0.0f, 0.0f, 0.0f, scale_sphere); 
 
-      // dessiner un cube
-      box.draw();
-      //ofDrawBox(0.0f, 0.0f, 0.0f, scale_cube);
-
-    ofPopMatrix();
-
-    ofPushMatrix();
-
-      // positionner la sphère
-      ofTranslate(
-        position_sphere.x,
-        position_sphere.y,
-        position_sphere.z);
-
-      // dessiner une sphère
-      sphere.draw();
-      //ofDrawSphere(0.0f, 0.0f, 0.0f, scale_sphere);
-
-    ofPopMatrix();
-
-    ofPushMatrix();
-
-      // positionner le teapot
-      teapot.setPosition(
-        position_teapot.x + 25.0f,
-        position_teapot.y + 15.0f,
-        position_teapot.z);
-
-      // dimension du teapot
-      teapot.setScale(
-        scale_teapot,
-        scale_teapot,
-        scale_teapot);
-
-      // dessiner un teapot
-      teapot.draw(OF_MESH_FILL);
-
-    ofPopMatrix();
-
-  ofPopMatrix();
+  teapot.setPosition(position_teapot.x + 25.0f,position_teapot.y + 15.0f,position_teapot.z);   
+  // dimension du teapot
+  teapot.setScale(scale_teapot,scale_teapot,scale_teapot);    
+  // dessiner un teapot
+  teapot.draw(OF_MESH_FILL);  
 
   // désactiver le shader
   shader->end();
